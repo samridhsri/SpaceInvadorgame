@@ -14,7 +14,6 @@ def fire(x,y):
     global bullet_state
     bullet_state = "fire"
     screen.blit(bulletimg, (x + 16, y + 10))
-    y = y + bullety_change
 
 pygame.init()
 
@@ -28,7 +27,7 @@ jet_change = 0
 bulletimg = pygame.image.load('bullet.png')
 bullety = 508
 bulletx = 0
-bullety_change = -10
+bullety_change = -1
 bullet_state = "ready"
 
 
@@ -63,9 +62,17 @@ while running:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or pygame.K_RIGHT:
                 jet_change = 0
+    #Jet Movement
+    
+
+
     #bullet movement
+    if bullety<=0:
+        bullety = 508
+        bullet_state = "Ready"
     if bullet_state is "fire":
-        fire(bulletx,bullety)
+        fire(bulletx, bullety)
+        bullety = bullety + bullety_change
     jet()
 
     pygame.display.update()
