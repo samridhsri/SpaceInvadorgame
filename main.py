@@ -18,8 +18,8 @@ def gameovertext():
     myname = fontuse.render("By Samridh", True, (255, 255, 255))
     surname = fontuse.render("Srivastava", True, (255, 255, 255))
     screen.blit(gameover, (420, 350))
-    screen.blit(myname, (420, 350))
-    screen.blit(surname, (420, 350))
+    screen.blit(myname, (420, 400))
+    screen.blit(surname, (420, 450))
 
 
 def jet():
@@ -48,7 +48,8 @@ def isCollision(monsterx, monstery, bulletx, bullety):
 scorefont = pygame.font.Font('ZenTokyoZoo-Regular.ttf', 30)
 fontuse = pygame.font.Font('ZenTokyoZoo-Regular.ttf', 44)
 # Screen is of 400x600
-screen = pygame.display.set_mode((1000, 650))
+# screen was 1000, 650
+screen = pygame.display.set_mode((800, 600))
 
 # score
 
@@ -59,15 +60,15 @@ texty = 5
 
 # jet image and position
 jetimg = pygame.image.load('jet-fighter.png')
-jetx = 165
+jetx = 360
 jety = 550
 jet_change = 0
 
 # bullet
 bulletimg = pygame.image.load('bullet.png')
-bullety = 595
+bullety = 530
 bulletx = 0
-bullety_change = -1
+bullety_change = -2
 bullet_state = "ready"
 
 # monster
@@ -75,16 +76,14 @@ bullet_state = "ready"
 allmonsterimg = []
 monsterx = []
 monstery = []
-monsterx_change = []
-monstery_change = []
-num_of_monsters = 6
+monsterx_change = 10
+monstery_change = 20
+num_of_monsters = 12
 
 for i in range(num_of_monsters):
     allmonsterimg.append(pygame.image.load('monster.png'))
     monsterx.append(random.randint(0, 1000))
     monstery.append(random.randint(0, 150))
-    monsterx_change = 1
-    monstery_change = 0.9
 
 # gameloop
 running = True
@@ -118,13 +117,17 @@ while running:
             gameovertext()
             break
 
-        monsterx[i] = monsterx[i] + monsterx_change
+        monsterx[i] += monsterx_change
         if monsterx[i] <= 0:
-            monsterx_change = 0.3
-            monstery[i] = monstery[i] + monstery_change
-        elif monsterx[i] > 900:
-            monsterx_change = -0.3
-            monstery[i] = monstery[i] + monstery_change
+            monsterx[i] = 0
+            monsterx_change = 0.4
+            monstery[i] += monstery_change
+            monsterx[i] += monsterx_change
+        elif monsterx[i] >= 736:
+            monsterx[i] = 736
+            monsterx_change = -0.4
+            monstery[i] += monstery_change
+            monsterx[i] += monsterx_change
 
         collision = isCollision(monsterx[i], monstery[i], bulletx, bullety)
         if collision:
@@ -141,8 +144,8 @@ while running:
     jetx = jetx + jet_change
     if jetx <= 0:
         jetx = 0
-    elif jetx >= 900:
-        jetx = 900
+    elif jetx >= 736:
+        jetx = 736
 
     # bullet movement
     if bullety <= 0:
